@@ -1,0 +1,5 @@
+.list-cd{
+    display: grid;
+    grid-template-columns: repeat(4,25%);
+    grid-column-gap:10px;
+}
