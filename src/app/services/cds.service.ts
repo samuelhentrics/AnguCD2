@@ -41,4 +41,14 @@ export class CdsService {
     ];
 
   }
+
+  getCDById(id: number) : CD{
+    const cd = this.getAllCDs().find( (cd) => cd.id === id);
+    if(cd){
+      return cd;
+    }
+    else{
+      throw new Error('Le CD n\'existe pas');
+    }
+  }
 }

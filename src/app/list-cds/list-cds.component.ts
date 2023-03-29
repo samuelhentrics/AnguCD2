@@ -16,4 +16,5 @@ export class ListCDsComponent implements OnInit {
     this.listcd = this.myCDservices.getAllCDs();
 
   }
+  
 }

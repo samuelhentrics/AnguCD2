@@ -1,0 +1,46 @@
+<div class="monForm">
+    <section class="subForm saisieForm">
+        <h2>Nouveau CD</h2>
+        <form [formGroup]="formulaire">
+            <div class="form-group">
+                <label for="title">Titre</label>
+                <input type="text" class="form-control" id="title" formControlName="title">
+            </div>
+            <div class="form-group">
+                <label for="author">Artiste</label>
+                <input type="text" class="form-control" id="author" formControlName="author">
+            </div>
+            <div class="form-group">
+                <label for="miniature">Image</label>
+                <input type="text" class="form-control" id="miniature" formControlName="thumbnail">
+            </div>
+
+            <div class="form-group">
+                <label for="dateDeSortie">Date de sortie</label>
+                <input type="date" class="form-control" id="dateDeSortie" formControlName="dateDeSortie">
+            </div>
+
+            <div class="form-group">
+                <label for="price">Prix</label>
+                <input type="number" class="form-control" id="price" formControlName="price">
+            </div>
+
+            <div class="form-group">
+                <label for="quantite">Quantité</label>
+                <input type="number" class="form-control" id="quantite" formControlName="quantite">
+            </div>
+            <button type="submit" class="btn btn-primary" (click)="addCd()">Ajouter le CD</button>
+        </form>
+    </section>
+    <section class="vueForm">
+        <h2>Vue du CD</h2>
+        <div *ngIf="currentCD$ | async as unCd">
+            <h2>{{ unCd.title | uppercase }}</h2>
+            <p>Sortie le : {{ unCd.dateDeSortie | date: "dd/MM/yyyy" }}</p>
+            <p>Auteur / Groupe : {{unCd.author}}</p>
+            <img [src]="unCd.thumbnail" [alt]="unCd.title">
+            <p>Prix : {{ unCd.price | currency:'EUR'}}</p>
+            <p>En stock : {{unCd.quantite}}</p>
+        </div>
+    </section>
+</div>

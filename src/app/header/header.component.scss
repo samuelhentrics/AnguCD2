@@ -5,4 +5,25 @@
 h1{
     font-size: 3em;
     color: rgb(4,74,255);
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+nav{
+    a{
+        background-color: rgb(114, 114, 114);
+        color: white;
+        padding: 0.5em 1em;
+        font-size: 15px;
+        text-decoration: none;
+        margin: 0 1em;
+    }
+
+    // Centrer
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
