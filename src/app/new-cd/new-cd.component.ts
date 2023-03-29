@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CD } from '../models/cd';
@@ -18,6 +18,20 @@ export class NewCDComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    let thumbRegex = new RegExp('https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg|webp)$');
+
+    this.formulaire = this.formBuilder.group({
+      title: [null, Validators.required, Validators.minLength(3)],
+      author: [null, Validators.required, Validators.minLength(3)],
+      price: [null, Validators.required, Validators.min(1)],
+      thumbnail: [null, Validators.required, Validators.pattern(thumbRegex)],
+      dateDeSortie: [null, Validators.required, Validators.minLength(1)],
+      quantite: [null, Validators.required, Validators.min(1)],
+    },
+    {
+      updateOn: 'blur'
+    }
+    )
 
     // Création du formulaire avec les champs
     this.formulaire = this.formBuilder.group({
