@@ -1,54 +1,39 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CD } from '../models/cd';
+import { Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CdsService {
+export class CdsService{
 
-  constructor() { }
+  constructor(private http : HttpClient) { }
 
-  getAllCDs() : CD[]{
-    return [
-      {
-        id: 1,
-        title : 'The Dark Side of the Moon',
-        author : 'Pink Floyd',
-        price : 10,
-        thumbnail : 'https://upload.wikimedia.org/wikipedia/commons/c/c7/The_Dark_Side_of_the_Moon_Cover.svg',
-        dateDeSortie : new Date(1973, 3, 1),
-        quantite : 1,
-        onsale: true
-      },
-      {
-        id: 2,
-        title : 'Pulse',
-        author : 'Pink Floyd',
-        price : 5,
-        thumbnail : 'https://upload.wikimedia.org/wikipedia/en/3/36/Pink_Floyd_-_Pulse.png',
-        dateDeSortie : new Date(1974, 3, 1),
-        quantite : 290
-      },
-      {
-        id: 3,
-        title : 'The Dark Side of the Flood',
-        author : 'Pink Floyd',
-        price : 15,
-        thumbnail : 'https://upload.wikimedia.org/wikipedia/commons/c/c7/The_Dark_Side_of_the_Moon_Cover.svg',
-        dateDeSortie : new Date(1979, 3, 1),
-        quantite : 1
-      }
-    ];
-
+  getAllCDs() : Observable<CD[]>{
+    return this.http.get<CD[]>('http://localhost:3000/CD');
+    
   }
 
-  getCDById(id: number) : CD{
-    const cd = this.getAllCDs().find( (cd) => cd.id === id);
-    if(cd){
-      return cd;
+  getCDById(id: number) : Observable<CD>{
+    const cd = this.http.get<CD>('http://localhost:3000/CD/' + id);
+    if (cd === undefined){
+      throw new Error('CD not found');
     }
-    else{
-      throw new Error('Le CD n\'existe pas');
-    }
+    return cd;
+  }
+
+  addCD(cd: CD) : Observable<CD>{
+    return this.getAllCDs().pipe(
+      // Trier les CD par id (liste de CD)
+      map(cds => [...cds].sort((a,b) => a.id - b.id)),
+      // Récupérer le dernier CD
+      map(cds_tries => cds_tries[cds_tries.length - 1]),
+      // Ajouter 1 à l'id du nouveau CD à créer
+      map(cd_max => (cd.id = cd_max.id + 1)),
+      // Créer le nouveau CD dans l'api
+      switchMap(cd => this.http.post<CD>('http://localhost:3000/CD', cd))
+    );
   }
 }

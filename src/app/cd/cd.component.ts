@@ -23,7 +23,12 @@ export class CdComponent implements OnInit {
     const idcd = this.router.snapshot.params['id'];
     if(idcd !== undefined){
       // Le + transforme la chaine de caractère en nombre
-      this.unCd = this.cdservices.getCDById(+idcd);
+      //this.unCd = this.cdservices.getCDById(+idcd);
+      //this.idcd = idcd;
+
+      this.cdservices.getCDById(+idcd).subscribe(cd => this.unCd = cd);
+      // entre parenthese revient à ecrire
+      // function (cd){return this.leCd = cd;}
       this.idcd = idcd;
     }
     else{

@@ -12,6 +12,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { NewCDComponent } from './new-cd/new-cd.component';
 
+// Pour les requetes
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +29,10 @@ import { NewCDComponent } from './new-cd/new-cd.component';
     AppRoutingModule,
     
     // Pour les formulaires reactifs
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
+    // Pour les requetes
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

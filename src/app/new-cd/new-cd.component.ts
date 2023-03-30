@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { CD } from '../models/cd';
+import { CdsService } from '../services/cds.service';
 
 @Component({
   selector: 'app-new-cd',
@@ -15,7 +17,9 @@ export class NewCDComponent implements OnInit {
   currentCD$!: Observable<CD>;
 
   // Injection de dépendence du FormBuilder (services)
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder,
+    private cdservices: CdsService,
+    private router: Router) { }
 
   ngOnInit(): void {
     let thumbRegex = new RegExp('https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg|webp)$');
@@ -61,8 +65,22 @@ export class NewCDComponent implements OnInit {
     );
   }
 
-  addCd(){
-    console.log(this.formulaire.value);
+  onSubmitForm(){
+    let newCd: CD = {
+      id: 0,
+      title: this.formulaire.get('title')?.value,
+      author: this.formulaire.get('author')?.value,
+      price: this.formulaire.get('price')?.value,
+      thumbnail: this.formulaire.get('thumbnail')?.value,
+      dateDeSortie: this.formulaire.get('dateDeSortie')?.value,
+      quantite: this.formulaire.get('quantite')?.value,
+    };
+
+    this.cdservices.addCD(newCd).pipe(
+      tap(() => this.router.navigate(['/catalogue']))
+    ).subscribe();
+
+
   }
 
 }
